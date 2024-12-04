@@ -1,22 +1,22 @@
 const express = require('express');
-const users = require('./MOCK_DATA.json')
+let users = require('./MOCK_DATA.json');
+const fs = require('fs');
+const mongoose = require("mongoose");
 const app = express();
+const User = require('./model/user')
+const userRouter = require(('./routes/user'))
+const connectMongoDb = require('./connection')
 
-app.get('/api/users',(req,res)=>{
-    return res.json(users)
+connectMongoDb("mongodb://localhost:27017/Project-API");
+
+app.use(express.urlencoded({extended: false}));
+
+app.use((req,res,next)=>{
+    console.log("Hello");
+    next()
 })
 
-app.get('/users',(req,res)=>{
-    const html =`
-    <ul>${users.map((user)=>`<li>${user.id}</li>`)}</ul>`
-    return res.send(html)
-})
-
-app.get('/api/users/:id',(req,res)=>{
-    const id = Number.parseInt(req.params.id);
-    const user = users.find((user)=>user.id===id)
-    return res.json(user)
-})
+app.use(('/api/user',userRouter))
 
 app.listen(3000,()=>{
     console.log('Server started')
