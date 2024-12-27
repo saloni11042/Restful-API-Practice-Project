@@ -5,13 +5,11 @@ async function handleGetAllUsers(req,res){
     return res.json(allUsers)
 }
 
-
 async function handlePostUser(req,res){
     const body = req.body;
     if(!body || !body.first_name || !body.last_name || !body.email || !body.gender || !body.job_title){
         return res.json({msg:"All fields are required"})
     } 
-
     const result = await User.create({
         firstName:body.first_name,
         lastName: body.last_name,
@@ -19,7 +17,6 @@ async function handlePostUser(req,res){
         gender:body.gender,
         jobTitle:body.job_title,
     })
-
     console.log("Result", result);
     return res.json({status:"Success"})
 

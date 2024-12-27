@@ -4,10 +4,10 @@ const fs = require('fs');
 const mongoose = require("mongoose");
 const app = express();
 const User = require('./model/user')
-const userRouter = require(('./routes/user'))
+const userRouter = require('./routes/user')
 const connectMongoDb = require('./connection')
 
-connectMongoDb("mongodb://localhost:27017/Project-API");
+connectMongoDb("mongodb://localhost:27017/Project-API").then(()=>console.log("Mongodb Connected"));
 
 app.use(express.urlencoded({extended: false}));
 
@@ -16,7 +16,7 @@ app.use((req,res,next)=>{
     next()
 })
 
-app.use(('/api/user',userRouter))
+app.use('/api/users',userRouter)
 
 app.listen(3000,()=>{
     console.log('Server started')
